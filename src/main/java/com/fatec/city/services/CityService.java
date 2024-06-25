@@ -25,4 +25,17 @@ public class CityService {
             () -> new EntityNotFoundException("Cidade não cadastrada!")
         );
     }
+
+    public void updateCity(int id, City city){
+        try {
+            City aux = this.cityRepository.getReferenceById(id);
+            aux.setNome(city.getNome());
+            aux.setEstado(city.getEstado());
+            aux.setPopulacao(city.getPopulacao());
+            aux.setPib(city.getPib());
+            this.cityRepository.save(aux);
+        } catch (EntityNotFoundException e) {
+            throw new EntityNotFoundException("Cidade não cadastrada!");
+        }
+    }
 }
