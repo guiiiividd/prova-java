@@ -3,6 +3,7 @@ package com.fatec.city.resources;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,7 +34,7 @@ public class CityController {
     }
 
     @PutMapping("{id}")
-    public void updateCity(@PathVariable int id, @RequestBody CityRequest city){
+    public void updateCity(@PathVariable int id, @Validated @RequestBody CityRequest city){
         this.cityService.updateCity(id, city);
     }
 
