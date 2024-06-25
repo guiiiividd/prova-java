@@ -2,7 +2,9 @@ package com.fatec.city.resources;
 
 import java.util.List;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,22 +26,24 @@ public class CityController {
     private CityService cityService;
     
     @GetMapping
-    public List<CityResponse> getCities(){
-        return this.cityService.getCities();
+    public ResponseEntity<List<CityResponse>> getCities(){
+        return ResponseEntity.ok(this.cityService.getCities());
     }
 
     @GetMapping("{id}")
-    public CityResponse getCityById(@PathVariable int id){
-        return this.cityService.getCityById(id);
+    public ResponseEntity<CityResponse> getCityById(@PathVariable int id){
+        return ResponseEntity.ok(this.cityService.getCityById(id));
     }
 
     @PutMapping("{id}")
-    public void updateCity(@PathVariable int id, @Validated @RequestBody CityRequest city){
+    public ResponseEntity<Void> updateCity(@PathVariable int id, @Validated @RequestBody CityRequest city){
         this.cityService.updateCity(id, city);
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("{id}")
-    public void deleteCityById(@PathVariable int id){
+    public ResponseEntity<Void> deleteCityById(@PathVariable int id){
         this.cityService.deleteCityById(id);
+        return ResponseEntity.noContent().build();
     }
 }
