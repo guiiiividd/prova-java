@@ -1,11 +1,15 @@
 package com.fatec.city.services;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fatec.city.dto.CityRequest;
+import com.fatec.city.dto.CityResponse;
 import com.fatec.city.entities.City;
+import com.fatec.city.mappers.CityMapper;
 import com.fatec.city.repositories.CityRepository;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -16,23 +20,25 @@ public class CityService {
     @Autowired
     private CityRepository cityRepository;
     
-    public List<City> getCities(){
-        return cityRepository.findAll();
+    public List<CityResponse> getCities(){
+        List <City> cities = cityRepository.findAll();
+        return cities.stream().map(c -> CityMapper.toDTO(c)).collect(Collectors.toList());
     }
 
-    public City getCityById(int id){
-        return cityRepository.findById(id).orElseThrow(
+    public CityResponse getCityById(int id){
+        City city = cityRepository.findById(id).orElseThrow(
             () -> new EntityNotFoundException("Cidade não cadastrada!")
         );
+        return CityMapper.toDTO(city);
     }
 
-    public void updateCity(int id, City city){
+    public void updateCity(int id, CityRequest city){
         try {
             City aux = this.cityRepository.getReferenceById(id);
-            aux.setNome(city.getNome());
-            aux.setEstado(city.getEstado());
-            aux.setPopulacao(city.getPopulacao());
-            aux.setPib(city.getPib());
+            aux.setNome(city.nome());
+            aux.setEstado(city.estado());
+            aux.setPopulacao(city.populacao());
+            aux.setPib(city.pib());
             this.cityRepository.save(aux);
         } catch (EntityNotFoundException e) {
             throw new EntityNotFoundException("Cidade não cadastrada!");

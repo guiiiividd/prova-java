@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fatec.city.entities.City;
+import com.fatec.city.dto.CityRequest;
+import com.fatec.city.dto.CityResponse;
 import com.fatec.city.services.CityService;
 
 @RestController
@@ -22,17 +23,17 @@ public class CityController {
     private CityService cityService;
     
     @GetMapping
-    public List<City> getCities(){
+    public List<CityResponse> getCities(){
         return this.cityService.getCities();
     }
 
     @GetMapping("{id}")
-    public City getCityById(@PathVariable int id){
+    public CityResponse getCityById(@PathVariable int id){
         return this.cityService.getCityById(id);
     }
 
     @PutMapping("{id}")
-    public void updateCity(@PathVariable int id, @RequestBody City city){
+    public void updateCity(@PathVariable int id, @RequestBody CityRequest city){
         this.cityService.updateCity(id, city);
     }
 
